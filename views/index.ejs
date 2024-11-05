@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parliamentary Members</title>
+    <script>
+        function searchMembers() {
+            const input = document.getElementById('searchInput').value.toLowerCase(); // Get search text
+            const members = document.querySelectorAll('#membersList li'); // Get all list items (members)
+
+            members.forEach(member => {
+                const name = member.querySelector('strong').nextSibling.nodeValue.trim().toLowerCase(); // Get member names
+                if (name.startsWith(input)) {
+                    member.style.display = ''; // Show the member if the name starts with the input
+                } else {
+                    member.style.display = 'none'; // Hide the member if it doesn't match
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<h1>Parliamentary Members</h1>
+
+<!-- Add New Member Button -->
+<a href="/new">Add New Member</a>
+<br><br> <!-- Adds spacing between the button and the search bar -->
+
+<!-- Search Box -->
+<input type="text" id="searchInput" oninput="searchMembers()" placeholder="Search by name..." />
+
+<ul id="membersList">
+    <% members.forEach(member => { %>
+        <li>
+            <strong>Name:</strong> <%= member.name %> <br>
+            <strong>Party:</strong> <%= member.party %> <br>
+            <strong>Position:</strong> <%= member.position %> <br>
+            <strong>Employment Date:</strong> <%= member.formattedDate %> <br><br>
+            <form action="/member/<%= member._id %>/delete" method="POST" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+            <form action="/member/<%= member._id %>/edit" method="GET" style="display:inline;">
+                <button type="submit">Edit</button>
+            </form>
+            <hr>
+        </li>
+    <% }) %>
+</ul>
+</body>
+</html>
