@@ -9,10 +9,16 @@ const app = express();
 const port = process.env.PORT || 3000;
 const dbConnectionString = process.env.DB_CONNECTION_STRING;
 
-// MongoDB connection
-mongoose.connect(dbConnectionString, { connectTimeoutMS: 10000 })
-    .then(() => console.log('MongoDB connected successfully.'))
-    .catch(err => console.error('MongoDB connection error:', err));
+// Mongoose connection
+mongoose.connect(dbConnectionString, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => {
+    console.log('Connected to MongoDB Atlas!');
+}).catch((err) => {
+    console.error('Failed to connect to MongoDB:', err);
+    process.exit(1); // Stop appen, hvis der er fejl
+});
 
 // Set EJS as view-engine
 app.set('view engine', 'ejs');
